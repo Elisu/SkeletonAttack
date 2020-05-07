@@ -5,27 +5,37 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
-{
+{    
 
-    public InputField playerName;
-
-    public void Quit ()                                          // ukonci hru
+    /// <summary>
+    /// Ends the game
+    /// </summary>    
+    public void Quit ()                                        
     {
         Debug.Log("Quit game");
         Application.Quit();
     }
 
-    public void Restart ()                           // spusti novou hru
+    /// <summary>
+    /// Starts new round
+    /// </summary>    
+    public void Restart ()                         
     {
         SceneManager.LoadScene( SceneManager.GetActiveScene().name);
     }
 
-    public void LeaderBoard()                        // nacte tabulku nejlepsich vysledku
+    /// <summary>
+    /// Loads the leaderboard screen
+    /// </summary>
+    public void LeaderBoard()                        
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void BackToMenu()                        //vrati do menu
+    /// <summary>
+    /// Back to main menu
+    /// </summary>
+    public void BackToMenu()                        
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
