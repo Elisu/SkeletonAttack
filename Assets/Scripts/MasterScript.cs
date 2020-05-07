@@ -14,7 +14,11 @@ public class MasterScript : MonoBehaviour
     public Text yourScore;                                      //text kolonky skóre
 
     public GameObject GameOverScreen;                           //objekt obrazovky konce hry
-    public GameObject ScoreBar;                                 //ukazatel skóre
+    public GameObject ScoreBar;
+    public GameObject NameInput;
+
+    public InputField playerNameInput;
+    public Button saveButton;
 
     private void Awake()                
     {
@@ -28,6 +32,14 @@ public class MasterScript : MonoBehaviour
     private void Start()
     {
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();  //dosazení textu nej skóre
+    }
+
+    private void Update()
+    {
+        if (playerNameInput.text == "")
+            saveButton.interactable = false;
+        else
+            saveButton.interactable = true;
     }
 
 
@@ -54,51 +66,68 @@ public class MasterScript : MonoBehaviour
 
     public void GameOver()                      // Game Over obrazovka
     {
-        GameOverScreen.SetActive(true);                     //zapnutí GameOver obrazovky
-        ScoreBar.SetActive(false);                          // vypnutí zobrazní skóre v pravém horním rohu
+         int score = scoreC.ReturnScore();                   //získání skóre
+        yourScore.text = "Your score: " + score;
 
-
-        int score = scoreC.ReturnScore();                   //získání skóre
-        yourScore.text = "Your score: " + score;             //zobrazení skóre
-        
         if (score > PlayerPrefs.GetInt("HighScore1111", 0))         //kontrola zda se zlepšilo nějaké uložené nej skóre
         {
-            OrganizeScores(score, "HighScore1111");            
-            highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
+            NameInput.SetActive(true);
         }
-            
+        else
+            Skip();
 
 
         Debug.Log("GAME OVER");
     }
 
-    public static void OrganizeScores(int score, string name)       //zatřídí nové skóre
+    public void SaveName()
     {
-        int[] values = new int [6];        
+        int score = scoreC.ReturnScore();
+        OrganizeScores(score, "HighScore1111", playerNameInput.text);       
+
+        Skip();
+
+    }
+
+    public void Skip()
+    {
+        NameInput.SetActive(false);
+        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
+        GameOverScreen.SetActive(true);                     //zapnutí GameOver obrazovky
+        ScoreBar.SetActive(false);                          // vypnutí zobrazní skóre v pravém horním rohu
+    }
+
+    public static void OrganizeScores(int score, string name, string playerName)       //zatřídí nové skóre
+    {
+        int[] values = new int [6];
+        string[] pNames = new string[6];
+        pNames[0] = playerName;
         values[0] = score;
 
-        for ( int i = 0; i <= 4; i++)        {
-
-            
+        for ( int i = 0; i <= 4; i++)
+        {            
             values[i + 1] = PlayerPrefs.GetInt(name.Substring(0, 13 - i), 0);     // názvy jsou HighScore, HighScore1, HighScore11... - bereme substringy 
+            pNames[i + 1] = PlayerPrefs.GetString("name"+name.Substring(0, 13 - i), "Empty");
             Debug.Log(name.Substring(0, 13 - i));
-
-
         }
 
         for (int i = 1; i <= 5; i++)                //porovnávání dvojic 
         {
             if (values[i - 1] > values[i])
             {
-                int help = values[i - 1];
+                int tmp = values[i - 1];
+                string tmp2 = pNames[i - 1];
                 values[i - 1] = values[i];
-                values[i] = help;
+                pNames[i - 1] = pNames[i];
+                pNames[i] = tmp2;
+                values[i] = tmp;
             }
         }
 
         for (int i = 0; i <= 4; i++)
-        {
+        {            
             PlayerPrefs.SetInt(name.Substring(0, 13 - i), values[i+1]);         //uložení 5 nej zpět do PlayerPrefs, aby si program pamatoval i v budoucnu
+            PlayerPrefs.SetString("name"+name.Substring(0, 13 - i), pNames[i + 1]);
         }
     }
 

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Leaderboard : MonoBehaviour
 {
     public Text[] scores;
+    public Text[] names;
 
     private string prefsName = "HighScore";
 
@@ -14,6 +15,7 @@ public class Leaderboard : MonoBehaviour
         for ( int i = 0; i <= 4; i++)
         {
             scores[i].text = PlayerPrefs.GetInt(prefsName, 0).ToString();
+            names[i].text = PlayerPrefs.GetString("name"+prefsName, "Empty");
             Debug.Log(prefsName);
             prefsName += "1";
         }
