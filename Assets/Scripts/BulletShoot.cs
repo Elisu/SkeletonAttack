@@ -4,41 +4,40 @@ using UnityEngine;
 
 public class BulletShoot : MonoBehaviour
 {
-    public float speed = 5;                 //rychlost kulky
-    public int damage = 50;                 //hodnota poškození, které uděluje
+    public float speed = 5;                 //bullet speed
+    public int damage = 50;                 
 
-    public float distance;                  //vzdálenost kontroly
-    public LayerMask whatToHit;             //určuje, co může být zasaženo za vrstvu
-    public GameObject destroyEffect;         //efekt exploze kulky
-
-    
- 
+    public float distance;                  //distance for collision check
+    public LayerMask whatToHit;             
+    public GameObject destroyEffect;   
 
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);      //výpočet pozice kulky v čase
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, whatToHit);   //kontrola srážky
-        if (hit.collider != null)   //poud kontrola najde srážku
+        //computes bullet position in time
+        transform.Translate(Vector2.up * speed * Time.deltaTime);      
+
+        //collision check
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, distance, whatToHit);   
+        if (hit.collider != null)   
         {
-            DestroyBullet();     //zničí objekt kulky
-            Enemy enemy = hit.collider.GetComponent<Enemy>();    //pokusí se najít objekt nepřítele, jež byl zasažen
+            DestroyBullet();     
+            Enemy enemy = hit.collider.GetComponent<Enemy>();   
             if (enemy != null)
             {
-                Debug.Log("Zasah");
-                enemy.DamageEnemy(damage);  //poškodí nepřítele
-            }
-           
-        }
-
-
-        
+                Debug.Log("Hit");
+                enemy.DamageEnemy(damage);  
+            }           
+        }        
     }
 
+    /// <summary>
+    /// Destroys the bullet and plays particle effect
+    /// </summary>
     void DestroyBullet()
-    {
-        Instantiate(destroyEffect, transform.position, Quaternion.identity);     //spustí efekt exploze na souřadnicích 
+    {        
+        Instantiate(destroyEffect, transform.position, Quaternion.identity);     
         Destroy(gameObject);
     }
 }

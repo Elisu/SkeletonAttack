@@ -6,8 +6,11 @@ public class CameraFollow : MonoBehaviour
 {
     public Vector2 velocity;
 
-    public float smoothTimeY;              //aby byl pohyb kamery plynulý
+    // For smooth camera movement
+    public float smoothTimeY;              
     public float smoothTimeX;
+
+    // Lowest y position camera can reach
     public float posYrestriction = -1;
 
     public GameObject player;
@@ -24,10 +27,11 @@ public class CameraFollow : MonoBehaviour
         if (player == null)
             return;
 
-        float posX = Mathf.SmoothDamp(transform.position.x, player.transform.position.x, ref velocity.x, smoothTimeX);   //pozice kamery x, cíl - pozice hráče x - 
+        float posX = Mathf.SmoothDamp(transform.position.x, player.transform.position.x, ref velocity.x, smoothTimeX);   
         float posY = Mathf.SmoothDamp(transform.position.y, player.transform.position.y, ref velocity.y, smoothTimeY);
 
-        posY = Mathf.Clamp(posY, posYrestriction, Mathf.Infinity);   //omezí y souradnici kamery mezi posYrestriction a infinity
-        transform.position = new Vector3(posX, posY, transform.position.z);  //nová pozice kamrery
+        // Restricts camera movement to interval  (posYrestriction, infinity)
+        posY = Mathf.Clamp(posY, posYrestriction, Mathf.Infinity);   
+        transform.position = new Vector3(posX, posY, transform.position.z);  
     }
 }

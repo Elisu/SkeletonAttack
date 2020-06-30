@@ -12,6 +12,7 @@ public class Leaderboard : MonoBehaviour
 
     private void Start()    
     {
+        // Prints leaderboard data from PlayerPrefs
         for ( int i = 0; i <= 4; i++)
         {
             scores[i].text = PlayerPrefs.GetInt(prefsName, 0).ToString();

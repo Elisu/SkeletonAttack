@@ -10,30 +10,30 @@ public class Enemy : MonoBehaviour
 
     public void DamageEnemy(int damage)
     {
-        Debug.Log("zasah");
-
+        Debug.Log("HIT");
         health -= damage;
+
         if (health <= 0)                        
         {
-                        //odstraneni nepritele
-
-            if ( damage != 99999)                       // aby davalo body jen kdyzz je opravdu trefi hrac
+            // To differentiate between enemy killed by bullet and killed by collision with player
+            if ( damage != 99999)                      
             {
-                MasterScript.KillEnemy(gameObject, true);   // pricte skore
+                // Killed by bullet - player gets kill points
+                MasterScript.KillEnemy(gameObject, true);   
             }
             else
                 MasterScript.KillEnemy(gameObject, false);
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)                  //detekce kolizi
+    void OnCollisionEnter2D(Collision2D collision)                  
     {
-        Player player = collision.collider.GetComponent<Player>();   
-
+        Player player = collision.collider.GetComponent<Player>();  
         
-        if ( player != null)    // pokud jsme zasahli hrace
+        if ( player != null)    
         {
             player.DamagePlayer(damage);
+            // Enemy collides with player = instant death of enemy and no kill points for player
             DamageEnemy(99999);
             Instantiate(destroyEffect, transform.position, Quaternion.identity);
         }

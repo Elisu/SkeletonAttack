@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour                    //tlačítka v menu
+public class MenuManager : MonoBehaviour                 
 {
 
-    public void PLayButton()                                //spustí hru
+    public void PLayButton()                              
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
     }
 
-    public void QuitButton()                            //ukončí aplikaci
+    public void QuitButton()                          
     {
         Application.Quit();
         Debug.Log("QUIT");
     }
 
-    public void LeaderBoardButton()                                //spustí hru
+    public void LeaderBoardButton()                         
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
 

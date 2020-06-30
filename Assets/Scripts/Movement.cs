@@ -5,18 +5,18 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    public float speed;                     //rychlost běhu postavy
-    public float jumpForce;                 //síla skoku
+    public float speed;                     
+    public float jumpForce;              
     private float moveInput;
     private Rigidbody2D rb;
-    public SpriteRenderer sr;           //obrázek postavy
+    public SpriteRenderer sr;         
 
     private bool facingRight = true;
 
     private bool isGrounded;
     public Transform groundCheck;
     public float checkRadius;
-    public LayerMask whatIsGround;              //na určení co se bere jako země
+    public LayerMask whatIsGround;              
 
     Transform playerBody;
 
@@ -30,14 +30,15 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-       isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);  //kontrola, zda postava stojí nebo ve vzduchu
+        //checks wheter player is touching ground
+       isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround); 
 
         
-        moveInput = Input.GetAxisRaw("Horizontal");      //vstup od hráče
+        moveInput = Input.GetAxisRaw("Horizontal");    
         
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);   //výpočet rychlosti, pouze na x, na y se nezmění, tedy pohyb doprava a doleva
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);  
 
-        if (facingRight == false && moveInput > 0)  //kontrola otočení obrázku
+        if (facingRight == false && moveInput > 0)  
         {
             Flip();
         }
@@ -51,15 +52,16 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)   
         {
-            rb.velocity = Vector2.up * jumpForce;      //skok, když zmáčknut mezerník a postava na zemi
+            //jump
+            rb.velocity = Vector2.up * jumpForce;      
         }
         
         
     }
 
     
-
-    void Flip()                                     //otočení obrázku postavy
+    //flips character sprite to face dircetion of movement
+    void Flip()                                     
     {                                               
         facingRight = !facingRight;
         Vector3 Scaler = playerBody.localScale;

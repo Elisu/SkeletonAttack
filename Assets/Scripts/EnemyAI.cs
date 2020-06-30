@@ -7,24 +7,21 @@ public class EnemyAI : MonoBehaviour
     private Seeker seeker;
     private Rigidbody2D rb;
 
-    public Transform player;                    //cíl
-    public float updatePathRate = 2f;                //rate jak často hledáme novou cestu
-
-
-    // cesta
+    // Target
+    public Transform player;                    
+    public float updatePathRate = 2f;      
     public Path path;
 
     public float nextDestinationDistance = 3;
-    private int currentDestination = 0;                 //kam aktuálně chceme
+    private int currentDestination = 0;                 
 
-    private bool lookingORnot = false;                  //zda hledáme cíl či ne
+    private bool lookingORnot = false;                 
 
-    public float speed = 300f; //rychlost nepritele
+    // Enemy speed
+    public float speed = 300f; 
     public ForceMode2D forceMode;
 
-    public bool pathIsEnded = false;
-
-    
+    public bool pathIsEnded = false;    
 
     private void Start()
     {
@@ -33,7 +30,8 @@ public class EnemyAI : MonoBehaviour
 
         if (player == null)
         {
-            if ( !lookingORnot)             //když nemáme cíl spustíme hledání
+            //if no target - start search
+            if ( !lookingORnot)             
             {
                 lookingORnot = true;
                 StartCoroutine(Searching());
@@ -41,57 +39,62 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        seeker.StartPath(transform.position, player.position, FoundPath);  //spuštění cesty k hráči a vrátí výsledek do procedury FoundPath
+        //start going on path to player and returns rusult of FoundPath
+        seeker.StartPath(transform.position, player.position, FoundPath);  
         StartCoroutine(UpdatePath());
     }
 
     IEnumerator Searching()
     {
+        //looking for player
         GameObject pom = GameObject.FindGameObjectWithTag("Player");  //chceme najít hráče
         
-        if ( pom == null)                                    //neobjevily jsme objekt hráče
+        if ( pom == null)                                    
         {
-            yield return new WaitForSeconds(0.5f);           //chvíli počkáme
-            StartCoroutine(Searching());                     //chceme zkusit znovu - zavoláme znovu
+            yield return new WaitForSeconds(0.5f);           
+            StartCoroutine(Searching());                     
         }
-        else                                                 //našli jsme
+        else                                                 
         {
-            lookingORnot = false;                             //už nehledáme
-            player = pom.transform;                           //dosadíme jako cíl to co jsme našli
-            StartCoroutine(UpdatePath());                      //zavoláme hledání cesty
+            lookingORnot = false;                            
+            player = pom.transform;                          
+            StartCoroutine(UpdatePath());                    
             yield break;
         }
 
     }
 
-    IEnumerator UpdatePath()                               //hledání cesty, potřebujeme pozastavit provádění
-    {                                                      //abychom neobnovovali cestu moc často, bylo by to zbytečné
-        if (player == null)                                 //když nemáme cíl
+    //looking for path - need to suspend search, so we dont upade path to often
+    IEnumerator UpdatePath()                              
+    {                                                     
+        if (player == null)                               
         {
             if (!lookingORnot)
             {
                 lookingORnot = true;
-                StartCoroutine(Searching());            //spustíme hledání cíle
+                //searching for target
+                StartCoroutine(Searching());           
             }
             yield break;
         }
 
-        seeker.StartPath(transform.position, player.position, FoundPath); //spustí trasu
-        yield return new WaitForSeconds(1f / updatePathRate);                    //počkáme, abychom hned zbytečně neaktualizovali cestu
-        StartCoroutine(UpdatePath());                               //znovu zavoláme k aktualizaci cesty, cíl se totiž mohl pohnout jinam
+        seeker.StartPath(transform.position, player.position, FoundPath); 
+        yield return new WaitForSeconds(1f / updatePathRate);             
+        //alled to update path in case target moved elsewhere
+        StartCoroutine(UpdatePath());                               
     }
 
 
-    public void FoundPath(Path p)   //dostane nalezenou cestu
+    public void FoundPath(Path p) 
     {
-        if (!p.error)    //když je cesta v pořádku, dosadíme jí do path
+        if (!p.error)    
         {
             path = p;
             currentDestination = 0;   
         }
     }
 
-    void FixedUpdate()                      //stará se o pohyb
+    void FixedUpdate()                      
     {
         if (player == null)
         {
@@ -111,11 +114,11 @@ public class EnemyAI : MonoBehaviour
 
         pathIsEnded = false;
 
-        // smer k dalsimu bodu
-        Vector3 direction = (path.vectorPath[currentDestination] - transform.position).normalized;   //odecteme od sebe 2 pozice - dostaneme směr a normalizujeme
+        // direction to next point
+        Vector3 direction = (path.vectorPath[currentDestination] - transform.position).normalized;   
         direction *= speed * Time.fixedDeltaTime;             
 
-        rb.AddForce(direction, forceMode);   // pohyb ve směr
+        rb.AddForce(direction, forceMode);   
 
         float vzdal = Vector3.Distance(transform.position, path.vectorPath[currentDestination]);
         if ( vzdal < nextDestinationDistance)

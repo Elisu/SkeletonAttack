@@ -6,32 +6,35 @@ public class Weapon : MonoBehaviour
 {
     public int offset;
 
-    public GameObject bullet;                   //projektil
-    public Transform firePoint;                 //pozice, odkud vylétají projektily
+    public GameObject bullet;     
+    //point at which bullets are instantiated
+    public Transform firePoint;                 
 
-    private float timeMeziShots;                
-    public float startTimeMeziShots;
+    private float timeBetweenShots;                
+    public float startTimeBetweenShots;
     // Update is called once per frame
     void Update()
     {
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;   // pozice mysi - pozice ruky
-        difference.Normalize();   // normalizujeme, aby mensi cisla
+        // mouse position - weapon position
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;   
+        difference.Normalize();   
 
-        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg; // vypocet uhlu, jaky mame dat ruce a prevedeme na stupne
-        transform.rotation = Quaternion.Euler(0f, 0f, rotationZ + offset); // upresnime ze ve stupnich
+        //computes angle at which weapon should be pointing
+        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg; 
+        transform.rotation = Quaternion.Euler(0f, 0f, rotationZ + offset); 
 
-        if (timeMeziShots <= 0)
+        if (timeBetweenShots <= 0)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                
-                Instantiate(bullet, firePoint.position, transform.rotation); // spawnuje kulky
-                timeMeziShots = startTimeMeziShots;
+                //spawns bullets
+                Instantiate(bullet, firePoint.position, transform.rotation); 
+                timeBetweenShots = startTimeBetweenShots;
             }
         }
         else
         {
-            timeMeziShots -= Time.deltaTime;
+            timeBetweenShots -= Time.deltaTime;
         }
 
        

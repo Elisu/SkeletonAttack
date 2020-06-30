@@ -6,27 +6,30 @@ public class EnemySpawner : MonoBehaviour
 {
     public enum State { spawning, waiting, counting };
 
-    [System.Serializable]   // aby bylo promene videt v Unity
+    [System.Serializable]  
     public class Wave
     {
 
-        public Transform enemy;                //objekt nepřítele
-        public int enemyCount;                  //počet nepřátel které chceme vypustit
+        public Transform enemy;            
+        //number of enemies to spawn
+        public int enemyCount;                  
         public float spawnRate;                 
 
     }
 
-    public Wave[] waves;                    //pole obsahující objekty vln
-    private int nextWave;                   //index vlny
+    public Wave[] waves;                    
+    private int nextWave;                
 
-    public float timeBtwWaves;              //čas mezivlnami
-    public float waveCountDown;             //odpočet mezi vlnami
-    private State state = State.counting;    //aktuální stav - začne odpočtem
+    public float timeBtwWaves;              
+    public float waveCountDown;     
+    //starts with countdown
+    private State state = State.counting;   
 
     private float searchCountDown;
-    private int Multiplier = 1;             //násobí počet nepřátel k zvyšování obtížnosti
+    //multiplies number of enemies to increase difficulty
+    private int Multiplier = 1;             
 
-    public Transform[] spawnPoints;         //pole bodů k spawnování nepřátel
+    public Transform[] spawnPoints;       
 
 
     // Start is called before the first frame update
@@ -38,12 +41,13 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( state == State.waiting)                //cekame až zabije vsechno
+        //waiting for player to kill the whole wave
+        if ( state == State.waiting)              
         {
-            if ( !EnemyAlive())                    //kontrola, zda nějaký nepřítel naživu
+            if ( !EnemyAlive())                    
             {
 
-                NextRound();                    //když ne, tak další kolo
+                NextRound();                  
             }
             else
             {
@@ -52,9 +56,9 @@ public class EnemySpawner : MonoBehaviour
 
         }
 
-        if (waveCountDown <= 0 && state != State.spawning)     //odpočet vlny a nepřátelé nejsou už vypouštěni
+        if (waveCountDown <= 0 && state != State.spawning)     
         {
-            StartCoroutine(WaveSpawn(waves[nextWave]));    //vypuštění nepřátel, jako couritne protože WaveSpawn je IEnumerator 
+            StartCoroutine(WaveSpawn(waves[nextWave]));    
         }
         else
         {
@@ -69,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
         if ( searchCountDown <= 0 )
         {
             searchCountDown = 1f;
-            if (GameObject.FindGameObjectWithTag("Enemy") == null)       //pokud nenajde nepřítele, nikdo nežije
+            if (GameObject.FindGameObjectWithTag("Enemy") == null)       
                 return false;
         }
         
@@ -82,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
         state = State.counting;
         waveCountDown = timeBtwWaves;
 
-        if ( nextWave + 1 > waves.Length - 1)   //źvýšení indexu vlny
+        if ( nextWave + 1 > waves.Length - 1) 
         {
             nextWave = 0;
             Multiplier += 1;
@@ -92,15 +96,16 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
-    IEnumerator WaveSpawn (Wave wave)                       //potřebujeme mít možnost pozastavit vykonávání, proto IEnumerator
+    IEnumerator WaveSpawn (Wave wave)                       
     {
         
         state = State.spawning;
 
-        for ( int i = 0; i <= wave.enemyCount * Multiplier ; i++)       //počet cyklu je počet neprátel, multiplier zvyšuje počet v dalších kolech
+        for ( int i = 0; i <= wave.enemyCount * Multiplier ; i++)     
         {
             Spawn(wave.enemy);
-            yield return new WaitForSeconds(1f/ wave.spawnRate);   //pozastavíme vykonávání, protože jsme si určily spawnRate a nechceme všechny najednou
+            //suspends spawning so enemies spawn at given rate and not all at once
+            yield return new WaitForSeconds(1f/ wave.spawnRate); 
         }
 
 
@@ -111,7 +116,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Spawn ( Transform enemy)
     {
-        Transform sPoint = spawnPoints[Random.Range(0, spawnPoints.Length - 1)];     //náhodný výběr jednoho ze spawnPointů
-        Instantiate(enemy, sPoint.position, sPoint.rotation);                   //nepřitel se objeví
+        //selects random spawnpoint
+        Transform sPoint = spawnPoints[Random.Range(0, spawnPoints.Length - 1)];     
+        Instantiate(enemy, sPoint.position, sPoint.rotation);                 
     }
 }

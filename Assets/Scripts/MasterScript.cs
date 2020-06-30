@@ -7,13 +7,13 @@ public class MasterScript : MonoBehaviour
 {
     public static MasterScript ms;                  
 
-    public int killPoints;                                      //body za setřelení
-    public Score scoreC;                                        //skóre
+    public int killPoints;                                      
+    public Score scoreC;                                       
     private int highScore;                      
-    public Text highScoreText;                                  //text kolonky nejlepšího skóre
-    public Text yourScore;                                      //text kolonky skóre
+    public Text highScoreText;                                  
+    public Text yourScore;                                     
 
-    public GameObject GameOverScreen;                           //objekt obrazovky konce hry
+    public GameObject GameOverScreen;                       
     public GameObject ScoreBar;
     public GameObject NameInput;
 
@@ -24,14 +24,14 @@ public class MasterScript : MonoBehaviour
     {
         if (ms == null)
         {
-            ms = GameObject.FindGameObjectWithTag("Master").GetComponent<MasterScript>();       //dosazení objektu s tagem "Master"
+            ms = GameObject.FindGameObjectWithTag("Master").GetComponent<MasterScript>();     
 
         }
     }
 
     private void Start()
     {
-        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();  //dosazení textu nej skóre
+        highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();  
     }
 
     private void Update()
@@ -43,33 +43,33 @@ public class MasterScript : MonoBehaviour
     }
 
 
-    public static void KillPlayer (GameObject player)    // zničení hráče a spustění konce hry
+    public static void KillPlayer (GameObject player)   
     {
         Destroy(player);
         ms.GameOver();
     }
 
-    public static void KillEnemy (GameObject enemy, bool AddScore)   //zničení nepřítele a zvýšení skóre
+    public static void KillEnemy (GameObject enemy, bool AddScore)  
     {
        
         Destroy(enemy);
 
-        if (AddScore == true)                                        //kontrola, zda opravdu sestřelil hráč
+        if (AddScore == true)                                      
             ms.ScoreAdder();
         
     }
 
-    public void ScoreAdder()                        //přičte skóre
+    public void ScoreAdder()                      
     {
         scoreC.ScoreCount(killPoints);
     }
 
-    public void GameOver()                      // Game Over obrazovka
+    public void GameOver()                     
     {
-         int score = scoreC.ReturnScore();                   //získání skóre
+         int score = scoreC.ReturnScore();                  
         yourScore.text = "Your score: " + score;
-
-        if (score > PlayerPrefs.GetInt("HighScore1111", 0))         //kontrola zda se zlepšilo nějaké uložené nej skóre
+        
+        if (score > PlayerPrefs.GetInt("HighScore1111", 0))         
         {
             NameInput.SetActive(true);
         }
@@ -93,11 +93,11 @@ public class MasterScript : MonoBehaviour
     {
         NameInput.SetActive(false);
         highScoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
-        GameOverScreen.SetActive(true);                     //zapnutí GameOver obrazovky
-        ScoreBar.SetActive(false);                          // vypnutí zobrazní skóre v pravém horním rohu
+        GameOverScreen.SetActive(true);                   
+        ScoreBar.SetActive(false);                        
     }
 
-    public static void OrganizeScores(int score, string name, string playerName)       //zatřídí nové skóre
+    public static void OrganizeScores(int score, string name, string playerName)  
     {
         int[] values = new int [6];
         string[] pNames = new string[6];
@@ -105,13 +105,15 @@ public class MasterScript : MonoBehaviour
         values[0] = score;
 
         for ( int i = 0; i <= 4; i++)
-        {            
-            values[i + 1] = PlayerPrefs.GetInt(name.Substring(0, 13 - i), 0);     // názvy jsou HighScore, HighScore1, HighScore11... - bereme substringy 
+        {
+            //names are HighScore, HighScore1, HighScore11... - takes substrings
+            values[i + 1] = PlayerPrefs.GetInt(name.Substring(0, 13 - i), 0);     
             pNames[i + 1] = PlayerPrefs.GetString("name"+name.Substring(0, 13 - i), "Empty");
             Debug.Log(name.Substring(0, 13 - i));
         }
 
-        for (int i = 1; i <= 5; i++)                //porovnávání dvojic 
+        //sort
+        for (int i = 1; i <= 5; i++)                
         {
             if (values[i - 1] > values[i])
             {
@@ -126,7 +128,8 @@ public class MasterScript : MonoBehaviour
 
         for (int i = 0; i <= 4; i++)
         {            
-            PlayerPrefs.SetInt(name.Substring(0, 13 - i), values[i+1]);         //uložení 5 nej zpět do PlayerPrefs, aby si program pamatoval i v budoucnu
+            //saves 5 best scores
+            PlayerPrefs.SetInt(name.Substring(0, 13 - i), values[i+1]);         
             PlayerPrefs.SetString("name"+name.Substring(0, 13 - i), pNames[i + 1]);
         }
     }
