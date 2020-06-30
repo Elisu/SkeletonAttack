@@ -1,9 +1,9 @@
 # SkeletonAttack
  Small action game made in Unity. 
  
- Controls: 
-  A - move left
-  D - move right
-  Space - jump
-  Mouse - aim
-  Mouse left button - shoot
+ Controls:<br/>
+  A - move left<br/>
+  D - move right<br/>
+  Space - jump<br/>
+  Mouse - aim<br/>
+  Mouse left button - shoot<br/>
