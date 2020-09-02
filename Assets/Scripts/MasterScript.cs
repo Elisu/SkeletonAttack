@@ -51,17 +51,19 @@ public class MasterScript : MonoBehaviour
 
     public static void KillEnemy (GameObject enemy, bool AddScore)  
     {
-       
+        int bonus = 0;
+        if (enemy.tag == "Boss")
+            bonus += 200;
+
         Destroy(enemy);
 
         if (AddScore == true)                                      
-            ms.ScoreAdder();
-        
+            ms.ScoreAdder(bonus);        
     }
 
-    public void ScoreAdder()                      
+    public void ScoreAdder(int bonus = 0)                      
     {
-        scoreC.ScoreCount(killPoints);
+        scoreC.ScoreCount(killPoints + bonus);
     }
 
     public void GameOver()                     

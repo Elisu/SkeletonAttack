@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
     public int depth = -100;                 
 
     //lives
-    public RectTransform[] hearts;       
+    public RectTransform[] hearts;
+    public Weapon normalWep;
+    public RocketLauncher rocketLauncher;
 
     private int hitNumber = 0;
     
@@ -43,16 +45,44 @@ public class Player : MonoBehaviour
         {
             MasterScript.KillPlayer(gameObject);
             
-            Destroy(hearts[hitNumber].gameObject);
+            hearts[hitNumber].gameObject.SetActive(false);
             
         }
         else
         {
-            
-            Destroy(hearts[hitNumber].gameObject);
+
+            hearts[hitNumber].gameObject.SetActive(false);
 
         }
 
         hitNumber += 1;                 
+    }   
+
+    public void TakeHeart(Collider2D collider)
+    {
+        if (collider.tag == "Life" && health < maxHealth)
+        {
+            Destroy(collider.gameObject);
+            hitNumber--;
+            hearts[hitNumber].gameObject.SetActive(true);
+            health += maxHealth / hearts.Length;
+        }
+            
+    }
+
+    public void TakeWeapon(Collider2D collider)
+    {
+        Destroy(collider.gameObject);
+        StartCoroutine(activateWeapon());
+    }
+
+    IEnumerator activateWeapon()
+    {
+        normalWep.gameObject.SetActive(false);
+        rocketLauncher.gameObject.SetActive(true);
+        yield return new WaitForSeconds(rocketLauncher.duration);
+        rocketLauncher.gameObject.SetActive(false);
+        normalWep.gameObject.SetActive(true);
+        yield break;
     }
 }

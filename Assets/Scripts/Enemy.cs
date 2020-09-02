@@ -6,7 +6,10 @@ public class Enemy : MonoBehaviour
 {
     public int health = 50;
     public int damage = 50;
+    public Transform player;
     public GameObject destroyEffect;
+
+    protected bool lookingORnot = false;
 
     public void DamageEnemy(int damage)
     {
@@ -23,6 +26,24 @@ public class Enemy : MonoBehaviour
             }
             else
                 MasterScript.KillEnemy(gameObject, false);
+        }
+    }
+
+    protected IEnumerator Searching()
+    {
+        //looking for player
+        GameObject pl = GameObject.FindGameObjectWithTag("Player");
+
+        if (pl == null)
+        {
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(Searching());
+        }
+        else
+        {
+            lookingORnot = false;
+            player = pl.transform;
+            yield break;
         }
     }
 
