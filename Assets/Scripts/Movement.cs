@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-
+    public bool secondP = false;
     public float speed;                     
     public float jumpForce;              
     private float moveInput;
@@ -16,7 +16,10 @@ public class Movement : MonoBehaviour
     private bool isGrounded;
     public Transform groundCheck;
     public float checkRadius;
-    public LayerMask whatIsGround;              
+    public LayerMask whatIsGround;
+    public KeyCode jump;
+    public KeyCode left;
+    public KeyCode right;
 
     Transform playerBody;
 
@@ -31,10 +34,15 @@ public class Movement : MonoBehaviour
     void FixedUpdate()
     {
         //checks wheter player is touching ground
-       isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround); 
+       isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-        
-        moveInput = Input.GetAxisRaw("Horizontal");    
+        //Checks if chosen buttons for movement pressed
+        if (Input.GetKey(right))
+            moveInput = 1;
+        else if (Input.GetKey(left))
+            moveInput = -1;
+        else
+            moveInput = 0; 
         
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);  
 
@@ -50,7 +58,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)   
+        if (Input.GetKeyDown(jump) && isGrounded == true)   
         {
             //jump
             rb.velocity = Vector2.up * jumpForce;      

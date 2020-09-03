@@ -47,17 +47,20 @@ public class EnemyAI : MonoBehaviour
     IEnumerator Searching()
     {
         //looking for player
-        GameObject pom = GameObject.FindGameObjectWithTag("Player");  //chceme najít hráče
-        
-        if ( pom == null)                                    
+        GameObject pl = null;
+        Player[] players = FindObjectsOfType<Player>();
+        if (players.Length > 0)
+            pl = players[Random.Range(0, players.Length)].gameObject;
+
+        if ( pl == null)                                    
         {
             yield return new WaitForSeconds(0.5f);           
             StartCoroutine(Searching());                     
         }
         else                                                 
         {
-            lookingORnot = false;                            
-            player = pom.transform;                          
+            lookingORnot = false;
+            player = pl.transform;           
             StartCoroutine(UpdatePath());                    
             yield break;
         }
@@ -98,7 +101,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (player == null)
         {
-            return;
+            StartCoroutine(Searching());
         }
 
         if (path == null)  

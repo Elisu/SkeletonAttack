@@ -16,7 +16,7 @@ public class BulletShoot : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        
+        //Prevetnts them staying acitve in scene forever
         if (lifeSpan <= 0)
             Destroy(gameObject);
 

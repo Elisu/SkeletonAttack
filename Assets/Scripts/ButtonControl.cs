@@ -4,13 +4,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ButtonControl : MonoBehaviour
-{
+{    
+    Leaderboard lead;
+    public bool modeForTwo;
+
+    private void Start()
+    {
+        lead = GetComponent<Leaderboard>();
+        modeForTwo = lead.mode2P;
+
+    }
     /// <summary>
-    /// Loads main scene
+    /// Loads gameplay based on mode
     /// </summary>
     public void PLayButton()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        if (!modeForTwo)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     /// <summary>
@@ -30,5 +42,17 @@ public class ButtonControl : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
     }
 
+    /// <summary>
+    /// Changes mode in leaderboard to show highscores for selected mode
+    /// </summary>
+    public void ChangeScores()
+    {
+        if (lead.mode2P)
+            lead.mode2P = false;
+        else
+            lead.mode2P = true;
 
+        //Reloads leaderboard
+        lead.Reload();
+    }
 }

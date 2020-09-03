@@ -58,6 +58,10 @@ public class Player : MonoBehaviour
         hitNumber += 1;                 
     }   
 
+    /// <summary>
+    /// Pick up extra life item
+    /// </summary>
+    /// <param name="collider"></param>
     public void TakeHeart(Collider2D collider)
     {
         if (collider.tag == "Life" && health < maxHealth)
@@ -70,12 +74,23 @@ public class Player : MonoBehaviour
             
     }
 
+    /// <summary>
+    /// Pick up rocket launcher
+    /// </summary>
+    /// <param name="collider"></param>
     public void TakeWeapon(Collider2D collider)
     {
-        Destroy(collider.gameObject);
-        StartCoroutine(activateWeapon());
+        if (rocketLauncher != null)
+        {
+            Destroy(collider.gameObject);
+            StartCoroutine(activateWeapon());
+        }        
     }
 
+    /// <summary>
+    /// Keeps weapon active for some time than disables it
+    /// </summary>
+    /// <returns></returns>
     IEnumerator activateWeapon()
     {
         normalWep.gameObject.SetActive(false);

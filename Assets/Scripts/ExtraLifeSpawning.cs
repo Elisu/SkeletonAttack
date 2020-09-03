@@ -16,6 +16,7 @@ public class ExtraLifeSpawning : MonoBehaviour
 
     private void Start()
     {
+        //Spawn extra life when boss enters
         Boss.BossEntered.AddListener(delegate { SpawnAndDestroy(life); });
         countDown = Random.Range(3000, 20000);
         //countDown = 5;
@@ -32,6 +33,7 @@ public class ExtraLifeSpawning : MonoBehaviour
     {
         if (countDown <= 0 && spawned == null)
         {
+            //Randomly spawn extra life or weapon
             int whichItem = Random.Range(0, 20);
             if (whichItem <= 15)
                 SpawnAndDestroy(life);
@@ -43,6 +45,10 @@ public class ExtraLifeSpawning : MonoBehaviour
         countDown--;
     }    
     
+    /// <summary>
+    /// When time elapses destroy item
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Destroy()
     {
         yield return new WaitForSeconds(Random.Range(minDuration, maxDuration));

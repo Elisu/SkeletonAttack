@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fireball : EnemyWeapon
-{    
-
-    private Vector3 endPosition;   
-
+{  
+  
+    /// <summary>
+    /// Fireballs falling from sky
+    /// </summary>
     private void FixedUpdate()
     {
         transform.Translate(Vector3.down * speed * Time.fixedDeltaTime);

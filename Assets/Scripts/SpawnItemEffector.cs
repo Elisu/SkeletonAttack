@@ -22,6 +22,7 @@ public class SpawnItemEffector : MonoBehaviour
         filter.SetLayerMask(LayerMask.GetMask("Player"));
         colliderEffector.OverlapCollider(filter, overlaping);
 
+        //For spawned items - if player is there to pick it up
         if (overlaping.Count > 0)
         {
             if (!isWeapon)

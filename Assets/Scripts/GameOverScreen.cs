@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
-{    
+{
+    public bool mode2P = false;
 
     /// <summary>
     /// Ends the game
@@ -29,7 +30,10 @@ public class GameOverScreen : MonoBehaviour
     /// </summary>
     public void LeaderBoard()                        
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (!mode2P)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     /// <summary>
@@ -37,7 +41,10 @@ public class GameOverScreen : MonoBehaviour
     /// </summary>
     public void BackToMenu()                        
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        if (!mode2P)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        else
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 3);
     }
 
     

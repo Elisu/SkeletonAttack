@@ -42,10 +42,11 @@ public class Rocket : BulletShoot
                 }
             }
 
-
+            //After collison checks radius for other objects
             overlaping = Physics2D.OverlapCircleAll(transform.position, damageRadius, whatToHit);
             DestroyBullet();
 
+            //For enemies and fireballs in radius - deals damage
             for (int i = 0; i < overlaping.Length; i++)
             {
                     Enemy enemyOther = overlaping[i].GetComponent<Enemy>();

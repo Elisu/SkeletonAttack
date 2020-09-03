@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     protected bool lookingORnot = false;
 
-    public void DamageEnemy(int damage)
+    public virtual void DamageEnemy(int damage)
     {
         Debug.Log("HIT");
         health -= damage;
@@ -29,10 +29,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Looks for player
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator Searching()
     {
-        //looking for player
-        GameObject pl = GameObject.FindGameObjectWithTag("Player");
+        GameObject pl = null;
+        //In case of more players
+        Player[] players = FindObjectsOfType<Player>();
+        if (players.Length > 0)
+            pl = players[Random.Range(0, players.Length)].gameObject;
 
         if (pl == null)
         {
@@ -55,8 +62,11 @@ public class Enemy : MonoBehaviour
         {
             player.DamagePlayer(damage);
             // Enemy collides with player = instant death of enemy and no kill points for player
-            DamageEnemy(99999);
-            Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            if (gameObject.GetComponent<EnemyAI>() != null)
+            {
+                DamageEnemy(99999);
+                Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            }            
         }
     }
 }

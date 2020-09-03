@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Enemy which hold its y position but tries to get above player
+/// Drops bombs
+/// </summary>
 public class BombEnemy : Enemy
 {
     public Transform[] bomb;
@@ -42,20 +46,27 @@ public class BombEnemy : Enemy
             rb.AddForce(direction, forceMode);
 
             if (bombCountdown <= 0)
-               SpawnBomb();
+                SpawnBomb();
 
             bombCountdown--;
         }
+        else
+            StartCoroutine(Searching());
         
     }
 
+    /// <summary>
+    /// Spawns bombs
+    /// </summary>
     void SpawnBomb()
     {
         bombCountdown = bombFrequency;
         Vector3 bottom = transform.position;
+        //Drop from bottom off enemy sprite
         bottom.y -= 2;
         int whatBomb = Random.Range(0, 10);
 
+        //Randomly picks between bomb models
         Transform chosenBomb;
         if (whatBomb < 8)
             chosenBomb = bomb[0];

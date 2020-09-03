@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Similar to BombEnemy but shoots guided missiles
+/// </summary>
 public class ShootingEnemy : Enemy
 {
     public Missile missile;

@@ -13,7 +13,7 @@ public class EnemyWeapon : MonoBehaviour
     protected void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
-        Debug.Log("Fireball destroyed");
+        Debug.Log("Projectile destroyed");
 
         if (collision.collider.tag == "Player")
         {

@@ -38,20 +38,27 @@ public class EnemySpawner : MonoBehaviour
     public Transform boss1Spawn;
     public Transform[] bomberSpawns;
     public Boss boss1;
+    public Transform bossGuard;
 
+    private GameObject boss;
     private int scoreRange = 301;
     private int fSpawnCounter = 0;
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         waveCountDown = timeBtwWaves;
-        chosenScore = Random.Range(0, scoreRange);        
+        chosenScore = Random.Range(0, scoreRange);
+
+        //DEBUG
+        //state = State.boss;
+        //boss = Instantiate(boss1.gameObject, boss1Spawn.position, Quaternion.identity);
+        //boss.GetComponent<Boss>().bossLowHealth.AddListener((() => { SpawnGuards(); }));
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         if (state != State.boss && state != State.fireRain)
         {            
             //waiting for player to kill the whole wave
@@ -88,9 +95,10 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
+            //If state boss but boss not alive then next round
             if (state == State.boss && !BossAlive())
                 NextRound();
-
+            
         }
     }
 
@@ -124,8 +132,10 @@ public class EnemySpawner : MonoBehaviour
         if ( nextWave + 1 > waves.Length - 1) 
         {
             nextWave = 0;
-            Instantiate(boss1.gameObject, boss1Spawn.position, Quaternion.identity);
+            boss = Instantiate(boss1.gameObject, boss1Spawn.position, Quaternion.identity);
+            boss.GetComponent<Boss>().bossLowHealth.AddListener((() => { SpawnGuards(); }));
             state = State.boss;
+            //To raise difficulty
             Multiplier += 1;
         }
         else        
@@ -184,6 +194,17 @@ public class EnemySpawner : MonoBehaviour
         }         
 
         yield break;
+    }
+
+    /// <summary>
+    /// Called when boss in trouble
+    /// </summary>
+    public void SpawnGuards()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Spawn(bossGuard);
+        }
     }
 }
 

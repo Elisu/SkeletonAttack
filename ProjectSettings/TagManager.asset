@@ -9,6 +9,7 @@ TagManager:
   - Life
   - Boss
   - Ground
+  - HealthBar
   layers:
   - Default
   - TransparentFX

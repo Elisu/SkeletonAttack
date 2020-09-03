@@ -10,7 +10,9 @@ public class Missile : EnemyWeapon
     // Start is called before the first frame update
     void Start()
     {
-        GameObject pl = GameObject.FindGameObjectWithTag("Player");
+        Player[] players = FindObjectsOfType<Player>();
+        GameObject pl = players[Random.Range(0, players.Length)].gameObject;
+        //Gets position of player - target for missile
         float x1 = pl.transform.position.x - transform.position.x;
         float y1 = pl.transform.position.y - transform.position.y;
         direction = new Vector3() { x = x1, y = y1, z = transform.position.z };
@@ -18,7 +20,7 @@ public class Missile : EnemyWeapon
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.Translate(direction * speed * Time.fixedDeltaTime);
     }

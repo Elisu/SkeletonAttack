@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
     //point at which bullets are instantiated
     public Transform firePoint;                 
 
-    private float timeBetweenShots;                
+    protected float timeBetweenShots;                
     public float startTimeBetweenShots;
     // Update is called once per frame
     void Update()
