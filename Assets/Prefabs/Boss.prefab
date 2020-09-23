@@ -371,7 +371,7 @@ MonoBehaviour:
         m_CallState: 2
   lowHealthTrigger: 450
   proximity: 40
-  chanceToHit: 9000
+  chanceToHit: 2000
 --- !u!60 &-7712334242206992622
 PolygonCollider2D:
   m_ObjectHideFlags: 0

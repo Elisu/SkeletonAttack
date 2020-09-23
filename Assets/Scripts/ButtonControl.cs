@@ -19,7 +19,7 @@ public class ButtonControl : MonoBehaviour
     /// </summary>
     public void PLayButton()
     {
-        if (!modeForTwo)
+        if (!lead.mode2P)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         else
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

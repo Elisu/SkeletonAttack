@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5904370976180517410}
   - component: {fileID: 640359877681984414}
   - component: {fileID: 6277545816530591373}
+  - component: {fileID: 3905240101604036327}
   m_Layer: 0
   m_Name: Bullet 1
   m_TagString: Untagged
@@ -103,3 +104,20 @@ MonoBehaviour:
     m_Bits: 3072
   destroyEffect: {fileID: 1421804615628119075, guid: 309b87933ff280844a885d184f2a7acd,
     type: 3}
+  scareDuration: 5
+--- !u!58 &3905240101604036327
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774256846948582010}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.6

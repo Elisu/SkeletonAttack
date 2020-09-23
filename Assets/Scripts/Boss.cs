@@ -17,7 +17,7 @@ public class Boss : Enemy
     //how close to player it goes
     public int proximity = 40;
     //how often it flies up to give player chance to hit weak spot
-    public int chanceToHit = 100;
+    public int chanceToHit = 1000;
 
     private int toHit;
     private Vector3 direction;
@@ -26,6 +26,7 @@ public class Boss : Enemy
     private int initialHealth;
     private int shotCoutdown;
     private BossHealthBar healthBar;
+    private int maxCount = 5000;
 
     private void Start()
     {
@@ -55,14 +56,17 @@ public class Boss : Enemy
                 healthBar.SetHealth(health);
             }            
         }
-            
+
 
         if (player != null)
         {
             if (chanceToHit < 0)
             {
                 //Boss rises to show weak spot
-                direction.y += 10;
+                if (transform.position.y < 25)
+                    direction.y += 10;
+                else
+                    count = maxCount;
                 count++;
             }
             else
@@ -90,8 +94,8 @@ public class Boss : Enemy
             }
 
             //Time for boss rise elapsed?
-            if (count > 1000)
-            {                
+            if (count > maxCount)
+            {
                 count = 0;
                 chanceToHit = toHit;
             }
@@ -100,6 +104,8 @@ public class Boss : Enemy
             chanceToHit--;
 
         }
+        else
+            Searching();
         
     }
 

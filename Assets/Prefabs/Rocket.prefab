@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
-  damage: 100
+  damage: 200
   distance: 0.5
   whatToHit:
     serializedVersion: 2

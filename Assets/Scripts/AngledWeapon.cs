@@ -17,9 +17,9 @@ public class AngledWeapon : Weapon
     void Update()
     {
         if (Input.GetKey(rotateLeft))
-            rotation += 1;
+            rotation += 0.2f;
         else if (Input.GetKey(rotateRight))
-            rotation -= 1;       
+            rotation -= 0.2f;       
         
         //Sets weapon rotation
         transform.rotation = Quaternion.Euler(0f, 0f, rotation + offset);

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public delegate void ChangeMovement(int duration);
 /// <summary>
 /// Enemy which hold its y position but tries to get above player
 /// Drops bombs
@@ -17,6 +19,8 @@ public class BombEnemy : Enemy
     private int bombCountdown;
     public Rigidbody2D rb;
 
+    private bool frozen = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -37,21 +41,24 @@ public class BombEnemy : Enemy
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        if (player != null)
+    {        
+        if (!frozen)
         {
-            Vector3 direction = new Vector3 { x = player.position.x - transform.position.x, y = 0, z = 0 };
-            direction = direction.normalized;
-            direction *= Speed * Time.fixedDeltaTime;
-            rb.AddForce(direction, forceMode);
+            if (player != null)
+            {
+                Vector3 direction = new Vector3 { x = player.position.x - transform.position.x, y = 0, z = 0 };
+                direction = direction.normalized;
+                direction *= Speed * Time.fixedDeltaTime;
+                rb.AddForce(direction, forceMode);
 
-            if (bombCountdown <= 0)
-                SpawnBomb();
+                if (bombCountdown <= 0)
+                    SpawnBomb();
 
-            bombCountdown--;
-        }
-        else
-            StartCoroutine(Searching());
+                bombCountdown--;
+            }
+            else
+                StartCoroutine(Searching());
+        }      
         
     }
 
@@ -74,5 +81,26 @@ public class BombEnemy : Enemy
             chosenBomb = bomb[1];
 
         Instantiate(chosenBomb, bottom, transform.rotation);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        BulletShoot bullet = collision.GetComponent<BulletShoot>();
+        if (bullet != null)
+            bullet.AddScare(Freeze);
+    }
+    
+
+    public void Freeze(int Duration)
+    {
+        StartCoroutine(FreezeMe(Duration));
+    }
+
+    IEnumerator FreezeMe(int Duration)
+    {
+        frozen = true;
+        yield return new WaitForSeconds(Duration);
+        frozen = false;
+        yield break;
     }
 }

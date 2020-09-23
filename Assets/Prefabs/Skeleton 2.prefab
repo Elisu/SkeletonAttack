@@ -193,7 +193,7 @@ MonoBehaviour:
   destroyEffect: {fileID: 1421804615628119075, guid: 309b87933ff280844a885d184f2a7acd,
     type: 3}
   missile: {fileID: 4972313793921352789, guid: f215c498e7e6e494a826c14b0b4ae00a, type: 3}
-  Speed: 600
-  shootCountdown: 100
+  Speed: 400
+  shootCountdown: 500
   forceMode: 0
   rb: {fileID: 3571698556623257207}

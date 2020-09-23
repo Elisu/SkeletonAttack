@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void ScareEnemy(int duration);
 public class BulletShoot : MonoBehaviour
 {
     public float speed = 5;                 //bullet speed
@@ -10,9 +11,16 @@ public class BulletShoot : MonoBehaviour
     public float distance;                  //distance for collision check
     public LayerMask whatToHit;             
     public GameObject destroyEffect;
+    public int scareDuration = 100;
+    protected int lifeSpan = 5000;
 
-    protected int lifeSpan = 500;
-    
+    private ScareEnemy scare;
+
+    public void AddScare(ScareEnemy ch)
+    {
+        scare = ch;
+    }
+
     // Update is called once per frame
     protected virtual void Update()
     {
@@ -31,7 +39,7 @@ public class BulletShoot : MonoBehaviour
             Enemy enemy = hit.collider.GetComponent<Enemy>();   
             if (enemy != null)
             {
-                Debug.Log("Hit");
+                Debug.Log("Hit");                 
                 enemy.DamageEnemy(damage);  
             }
             else
@@ -43,7 +51,13 @@ public class BulletShoot : MonoBehaviour
                         fb.Damage(damage);
                 }
             }
-        }      
+        }
+
+        if (scare != null)
+        {
+            scare(scareDuration);
+            scare = null;
+        }
 
         lifeSpan--;
     }
@@ -56,4 +70,5 @@ public class BulletShoot : MonoBehaviour
         Instantiate(destroyEffect, transform.position, Quaternion.identity);     
         Destroy(gameObject);
     }
+
 }
