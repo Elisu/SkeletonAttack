@@ -10,6 +10,7 @@ Simple 2D action shooter game made in Unity. The player controls the character w
  - leaderboard<br/>
  - item spawning - extra life, advanced weapon<br/>
  - hot seat mode for 2 player<br/>
+ - my own unique art assets
 
  **Controls:**<br/>
   A - move left<br/>
